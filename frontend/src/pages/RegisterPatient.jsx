@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { assets } from '../assets/assets';
 
 function RegisterPatient() {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ function RegisterPatient() {
           <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-center">
             Register and talk in <br /> your language!
           </h2>
+          <img src={assets.register_img} alt="" />
         </div>
 
         <div className="bg-white p-10 flex flex-col justify-center">

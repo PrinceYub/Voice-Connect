@@ -10,6 +10,11 @@ import Navbar from './components/Navbar'
 import RoleSelection from './pages/RoleSelection'
 import RegisterPatient from './pages/RegisterPatient'
 import RegisterNHS from './pages/RegisterNHS'
+import PatientsDashboard from './pages/PatientsDashboard'
+import DoctorsDashboard from './pages/DoctorsDashboard'
+import ProtectedRoute from './components/ProtectedRoute'
+import AdminDashboard from './pages/AdminDashboard'
+import ReceptionistDashboard from './pages/ReceptionistDashboard'
 
 const App = () => {
   return (
@@ -25,6 +30,11 @@ const App = () => {
     <Route path='/register' element ={<RoleSelection/>} />
     <Route path='/register/patient' element ={<RegisterPatient/>}/>
     <Route path='/register/nhs' element ={<RegisterNHS/>}/>
+    <Route path='/patientsdashboard' element = {  <ProtectedRoute><PatientsDashboard/> </ProtectedRoute>}/>
+    <Route path='/doctorsdashboard' element = { <ProtectedRoute> <DoctorsDashboard/> </ProtectedRoute> }/>
+    <Route path='/admindashboard' element = { <ProtectedRoute> <AdminDashboard/> </ProtectedRoute> }/>
+    <Route path='/receptionistdashboard' element = { <ProtectedRoute> <ReceptionistDashboard/> </ProtectedRoute> }/>
+    <Route path='/myprofile' element = { <ProtectedRoute> <MyProfile/> </ProtectedRoute> }/>
      </Routes>
     </div>
   )

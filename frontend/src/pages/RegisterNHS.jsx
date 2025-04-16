@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { assets } from '../assets/assets';
 import axios from 'axios'; // ✅ added axios import
 
 function RegisterNHS() {
@@ -25,7 +26,7 @@ function RegisterNHS() {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/register/nhs', form);
       console.log('Success:', response.data);
-      alert(res.data.message);
+      alert(response.data.message);
       navigate('/login'); 
     } catch (err) {
       console.error('Registration error:', err.response?.data || err.message);
@@ -39,6 +40,7 @@ function RegisterNHS() {
         <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-center">
           Register and talk in <br /> your language!
         </h2>
+        <img src={assets.register_img} alt="" />
       </div>
 
       <div className="h-full bg-white p-10 flex flex-col justify-center">
@@ -112,6 +114,7 @@ function RegisterNHS() {
             <option value="doctor">Doctor</option>
             <option value="nurse">Nurse</option>
             <option value="admin">Admin</option>
+            <option value="receptionist">Receptionist</option>
           </select>
 
           <button

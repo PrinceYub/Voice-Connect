@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { assets } from '../assets/assets';
 
 function Login() {
   const navigate = useNavigate();
@@ -16,25 +17,27 @@ function Login() {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', form);
       console.log('Login success:', res.data);
-      alert(res.data.message);
-      
+    
+      // Safe message fallback
+      alert(res.data?.message || 'Login successful');
+    
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('role', res.data.user.role);
-
-      // Redirect based on role
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+    
       switch (res.data.user.role) {
         case 'patient':
-          navigate('/dashboard/patient');
+          navigate('/patientsdashboard');
           break;
         case 'doctor':
-          navigate('/dashboard/doctor');
+          navigate('/doctorsdashboard');
           break;
-        case 'nurse':
-          navigate('/dashboard/nurse');
-          break;
-        case 'admin':
-          navigate('/dashboard/admin');
-          break;
+            case 'receptionist':
+              navigate('/receptionistdashboard');
+              break;
+            case 'admin':
+              navigate('/admindashboard');
+              break;
         default:
           navigate('/');
       }
@@ -47,11 +50,18 @@ function Login() {
   return (
     <div className="h-screen grid grid-cols-1 md:grid-cols-2 bg-gray-100">
       {/* Left Side */}
-      <div className="h-full bg-white flex flex-col items-center justify-center p-8">
-        <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-center">
-          You are almost <br /> there!
-        </h2>
-      </div>
+      <div className="h-full bg-blue-50 flex flex-col items-center justify-start pt-24 px-8">
+    <h2 className="text-2xl font-semibold text-blue-700 mb-8 text-center">
+      You are almost <br /> there!
+    </h2>
+    <div className="w-72 max-w-full rounded-xl overflow-hidden shadow-md">
+      <img
+        src={assets.log_img}
+        alt="Doctor comforting patient"
+        className="w-full h-auto object-cover"
+      />
+    </div>
+  </div>
 
       {/* Login Form */}
       <div className="h-full bg-white p-10 flex flex-col justify-center">
