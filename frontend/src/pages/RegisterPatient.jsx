@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { assets } from '../assets/assets';
 
 function RegisterPatient() {
   const navigate = useNavigate();
@@ -18,20 +19,28 @@ function RegisterPatient() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: form validation + API call here
-    console.log('Submitting:', form);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register/patient', form);
+      console.log('Success:', response.data);
+      alert(response.data.message);
+      navigate('/login');
+    } catch (err) {
+      console.error('Patient Registration Error:', err.response?.data || err.message);
+      alert(err.response?.data?.message || 'Registration failed');
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
-
       <div className="h-screen grid grid-cols-1 md:grid-cols-2">
         <div className="bg-white flex flex-col items-center justify-center p-8">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+          <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-center">
             Register and talk in <br /> your language!
           </h2>
+          <img src={assets.register_img} alt="" />
         </div>
 
         <div className="bg-white p-10 flex flex-col justify-center">

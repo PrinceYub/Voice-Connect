@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { assets } from '../assets/assets';
+import axios from 'axios'; // ✅ added axios import
 
 function RegisterNHS() {
   const navigate = useNavigate();
@@ -12,15 +13,25 @@ function RegisterNHS() {
     confirmPassword: '',
     employeeId: '',
     phoneNumber: '',
+    role: '',
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting Staff:', form);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register/nhs', form);
+      console.log('Success:', response.data);
+      alert(response.data.message);
+      navigate('/login'); 
+    } catch (err) {
+      console.error('Registration error:', err.response?.data || err.message);
+      alert(err.response?.data?.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -29,7 +40,7 @@ function RegisterNHS() {
         <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-center">
           Register and talk in <br /> your language!
         </h2>
-
+        <img src={assets.register_img} alt="" />
       </div>
 
       <div className="h-full bg-white p-10 flex flex-col justify-center">
@@ -92,6 +103,20 @@ function RegisterNHS() {
             onChange={handleChange}
           />
 
+          <select
+            name="role"
+            className="w-full p-2 border-b border-gray-400 focus:outline-none bg-white text-gray-700"
+            onChange={handleChange}
+            defaultValue=""
+            required
+          >
+            <option value="" disabled>Select Role</option>
+            <option value="doctor">Doctor</option>
+            <option value="nurse">Nurse</option>
+            <option value="admin">Admin</option>
+            <option value="receptionist">Receptionist</option>
+          </select>
+
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full transition"
@@ -115,4 +140,3 @@ function RegisterNHS() {
 }
 
 export default RegisterNHS;
-

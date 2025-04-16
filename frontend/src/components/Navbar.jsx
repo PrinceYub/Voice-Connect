@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {useLocation} from 'react-router-dom';
 import { assets } from '../assets/assets';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react'; // optional icon library like lucide-react or use emoji/icons
@@ -7,6 +8,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
+
+const location = useLocation(); // ✅ define location
+  const isDashboard = [
+    '/patientsdashboard',
+    '/doctorsdashboard',
+    '/receptionistdashboard',
+    '/admindashboard',
+    '/my-profile' // ✅ Include if you want to hide Sign In/Register on profile too
+  ].some(path => location.pathname.startsWith(path));
   return (
     <nav className="bg-blue-900 text-white px-4 py-4">
       <div className="flex items-center justify-between max-w-screen-xl mx-auto">
@@ -35,18 +45,22 @@ const Navbar = () => {
           <NavLink to="/contact" className="hover:text-blue-300">
             Contact us
           </NavLink>
+          {!isDashboard && (
           <NavLink to="/login" className="hover:text-blue-300">
-            Log in
+            Sign In 
           </NavLink>
+          )}
         </ul>
 
         {/* Register Button - desktop only */}
-        <button
+        {!isDashboard && (
+         <button
           onClick={() => navigate('/register')}
           className="hidden md:block bg-customBlue text-white px-6 py-2 rounded-full"
         >
           Register
         </button>
+        )}
       </div>
 
       {/* Mobile menu */}
@@ -61,18 +75,7 @@ const Navbar = () => {
           <NavLink to="/contact" onClick={() => setMenuOpen(false)} className="block">
             Contact us
           </NavLink>
-          <NavLink to="/login" onClick={() => setMenuOpen(false)} className="block">
-            Login 
-          </NavLink>
-          <button
-            onClick={() => {
-              navigate('/register');
-              setMenuOpen(false);
-            }}
-            className="w-full bg-customBlue text-white px-4 py-2 rounded-full mt-2"
-          >
-            Register
-          </button>
+          
         </div>
       )}
     </nav>
