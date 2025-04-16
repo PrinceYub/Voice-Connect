@@ -36,7 +36,7 @@ const Navbar = () => {
             Contact us
           </NavLink>
           <NavLink to="/login" className="hover:text-blue-300">
-            Log in
+            Sign In 
           </NavLink>
         </ul>
 
@@ -62,7 +62,7 @@ const Navbar = () => {
             Contact us
           </NavLink>
           <NavLink to="/login" onClick={() => setMenuOpen(false)} className="block">
-            Login 
+            Sign In
           </NavLink>
           <button
             onClick={() => {

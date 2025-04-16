@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import loginBanner from '../assets/login_banner.png'; // adjust if different
+import axios from 'axios';
 
 function Login() {
   const navigate = useNavigate();
@@ -10,29 +10,52 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: send login request
-    console.log(form);
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/login', form);
+      console.log('Login success:', res.data);
+      alert(res.data.message);
+      
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('role', res.data.user.role);
+
+      // Redirect based on role
+      switch (res.data.user.role) {
+        case 'patient':
+          navigate('/dashboard/patient');
+          break;
+        case 'doctor':
+          navigate('/dashboard/doctor');
+          break;
+        case 'nurse':
+          navigate('/dashboard/nurse');
+          break;
+        case 'admin':
+          navigate('/dashboard/admin');
+          break;
+        default:
+          navigate('/');
+      }
+    } catch (err) {
+      console.error('Login error:', err.response?.data || err.message);
+      alert(err.response?.data?.message || 'Login failed');
+    }
   };
 
   return (
     <div className="h-screen grid grid-cols-1 md:grid-cols-2 bg-gray-100">
-      {/* Left Section with Image */}
+      {/* Left Side */}
       <div className="h-full bg-white flex flex-col items-center justify-center p-8">
         <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-center">
           You are almost <br /> there!
         </h2>
-        {/* <img
-          src={loginBanner}
-          alt="Login illustration"
-          className="w-full max-w-sm object-contain"
-        /> */}
       </div>
 
-      {/* Right Section (Login Form) */}
+      {/* Login Form */}
       <div className="h-full bg-white p-10 flex flex-col justify-center">
-        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Sign Up</h2>
+        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">Sign In</h2>
         <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
           <input
             type="email"
