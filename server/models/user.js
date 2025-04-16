@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   role: {
     type: String,
-    enum: ['patient', 'doctor', 'nurse', 'admin'],
+    enum: ['patient', 'doctor', 'nurse', 'admin', 'receptionist'],
     required: true,
   },
   firstName: {
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
   employeeId: {
     type: String,
     required: function () {
-      return ['doctor', 'nurse', 'admin'].includes(this.role);
+      return ['doctor', 'nurse', 'admin', 'receptionist'].includes(this.role);
     },
   }
 }, {

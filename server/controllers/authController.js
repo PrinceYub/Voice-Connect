@@ -16,7 +16,7 @@ const registerNHSUser = async (req, res) => {
   } = req.body;
 
   try {
-    const allowedRoles = ['doctor', 'nurse', 'admin'];
+    const allowedRoles = ['doctor', 'nurse', 'admin', 'receptionist'];
     if (!allowedRoles.includes(role)) {
       return res.status(400).json({ message: 'Invalid role selected' });
     }
